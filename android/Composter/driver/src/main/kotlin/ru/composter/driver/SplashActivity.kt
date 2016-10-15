@@ -3,7 +3,6 @@ package ru.composter.driver
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import ru.composter.rsa.KeysStorage
 
 class SplashActivity : AppCompatActivity() {
 
@@ -11,7 +10,7 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
         findViewById(R.id.auth)!!.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
+            val intent = Intent(this, AuthActivity::class.java)
             startActivity(intent)
             finish()
         }

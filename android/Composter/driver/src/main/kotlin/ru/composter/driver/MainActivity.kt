@@ -11,6 +11,7 @@ import ru.composter.commands.CommandsProcessor
 import ru.composter.commands.PaymentConfirm
 import ru.composter.commands.PaymentRequest
 import ru.composter.driver.api.Api
+import ru.composter.driver.api.TransactionSubmitRequest
 import java.util.*
 import java.util.concurrent.Executors
 import kotlin.properties.Delegates
@@ -33,8 +34,6 @@ class MainActivity : AppCompatActivity() {
         executore.execute(socketListener)
         executore.execute(balanceListner)
 
-        balance("999.99")
-
         val discoverableIntent = Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE)
         discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 0)
         startActivity(discoverableIntent)
@@ -48,7 +47,7 @@ class MainActivity : AppCompatActivity() {
 
     fun stateWorking() {
         runOnUiThread {
-            statusTextView.setText("Поиск...")
+            statusTextView.setText("Готов к работе")
         }
     }
 
@@ -96,6 +95,18 @@ class MainActivity : AppCompatActivity() {
                         val commandProcerssor = CommandsProcessor(socket, object : CommandsProcessor.Callback {
                             override fun onPaymentConfirm(pr: PaymentConfirm) {
                                 statePaymentConfirm()
+                                Api.api.paymentConfirm(TransactionSubmitRequest(
+                                        route_number = pr.paymentRequest.routeInfo,
+                                        currency = pr.paymentRequest.currency,
+                                        price = pr.paymentRequest.price,
+                                        timestamp = pr.paymentRequest.timestamp,
+                                        vehicle_number = pr.paymentRequest.venchileCode,
+                                        publican_sign = pr.paymentRequest.driverSign,
+                                        payer_sign = pr.passangerSign,
+                                        payer_id = pr.passangerId,
+                                        payment_id = pr.paymentRequest.payment_id,
+                                        publican_id = pr.paymentRequest.driverId
+                                ))
                             }
 
                             override fun onPaymentRequest(pr: PaymentRequest) {
@@ -105,13 +116,15 @@ class MainActivity : AppCompatActivity() {
                         })
                         commandProcerssor.start()
                         commandProcerssor.sendPaymentRequest(PaymentRequest(
-                                driverId = "123456",
-                                driverName = "Весёлый бомбила Ашот",
+                                driverId = "58014aa4e9e84",
+                                driverName = "Иван Иванов",
                                 price = "25",
-                                routeInfo = "Кюда надо слющай?",
+                                routeInfo = "Самара - Тольятти",
                                 venchileCode = "а999аа63rus",
-                                driverSign = "подпись"
-
+                                driverSign = "подпись",
+                                timestamp = "1234567",
+                                currency = "RUR",
+                                payment_id = UUID.randomUUID().toString()
                         ))
 
 
