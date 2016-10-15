@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import ru.composter.commands.CommandsProcessor
+import ru.composter.commands.PaymentRequest
 import java.io.IOException
 import java.util.*
 
@@ -55,10 +56,12 @@ class MainActivity : AppCompatActivity() {
                     } else {
                         var b = true
                         Log.d("Driver", "${socket.remoteDevice.name}")
-                        val commandProcerssor = CommandsProcessor(socket) {
-                            Log.v("Sokolov", "get ${it}")
-                            b = false
-                        }
+                        val commandProcerssor = CommandsProcessor(socket, object : CommandsProcessor.Callback{
+                            override fun onPaymentRequest(pr: PaymentRequest) {
+                                //throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
+                            }
+
+                        })
                         commandProcerssor.start()
                         ////while (socket.isConnected) {
                         commandProcerssor.sendString(data)
