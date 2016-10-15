@@ -12,12 +12,13 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.IOException;
 import java.util.UUID;
 
-import kotlin.Unit;
-import kotlin.jvm.functions.Function1;
 import ru.composter.commands.CommandsProcessor;
+import ru.composter.commands.PaymentRequest;
 
 public class ApplyActivity extends Activity {
 
@@ -69,20 +70,23 @@ public class ApplyActivity extends Activity {
 
         private final BluetoothSocket mmSocket;
         CommandsProcessor commandsProcessor;
+        PaymentRequest paymentRequest;
 
         public ConnectedThread(BluetoothSocket socket, String socketType) {
             Log.d(TAG, "create ConnectedThread: " + socketType);
             mmSocket = socket;
-            commandsProcessor = new CommandsProcessor(mmSocket, new Function1<String, Unit>() {
+            commandsProcessor = new CommandsProcessor(mmSocket, new CommandsProcessor.Callback() {
                 @Override
-                public Unit invoke(final String s) {
+                public void onPaymentRequest(@NotNull final PaymentRequest pr) {
                     new Handler(getMainLooper()).post(new Runnable() {
                         @Override
                         public void run() {
-                            ((TextView) findViewById(R.id.info)).setText(s);
+                            paymentRequest = pr;
+                            ((TextView) findViewById(R.id.name)).setText(pr.getDriverName());
+                            ((TextView) findViewById(R.id.car)).setText(pr.getVenchileCode());
+                            ((TextView) findViewById(R.id.route)).setText(pr.getRouteInfo());
                         }
                     });
-                    return null;
                 }
             });
 
