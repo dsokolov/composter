@@ -29,7 +29,12 @@ public class BluetoothArrayAdapter extends ArrayAdapter<DeviceListActivity.Bluet
         if (bluetooth.getName() != null) {
             name.setText(bluetooth.getName());
         } else {
-            name.setText("Без названия");
+            if (bluetooth.getAddress() != null) {
+                name.setText(bluetooth.getAddress());
+            } else {
+                name.setText("Устройства не обнаружены");
+                convertView.setEnabled(false);
+            }
         }
         return convertView;
     }
