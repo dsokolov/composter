@@ -117,9 +117,9 @@ class MainActivity : AppCompatActivity() {
                         commandProcerssor.start()
                         commandProcerssor.sendPaymentRequest(PaymentRequest(
                                 driverId = "58014aa4e9e84",
-                                driverName = "Весёлый бомбила Ашот",
+                                driverName = "Иван Иванов",
                                 price = "25",
-                                routeInfo = "Кюда надо слющай?",
+                                routeInfo = "Самара - Тольятти",
                                 venchileCode = "а999аа63rus",
                                 driverSign = "подпись",
                                 timestamp = "1234567",
