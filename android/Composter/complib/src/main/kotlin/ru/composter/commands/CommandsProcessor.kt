@@ -19,6 +19,9 @@ class CommandsProcessor(
     private val input = DataInputStream(socket.inputStream)
     private val output = DataOutputStream(socket.outputStream)
     private var wather: Wather = Wather()
+    val working: Boolean
+        get() = wather.working
+
 
     fun sendString(s: String) {
         output.writeUTF(s)
@@ -67,6 +70,7 @@ class CommandsProcessor(
                     }
                 } catch (e: IOException) {
                     Log.w("Driver", e.message)
+                    working = false
                 }
                 Thread.sleep(1000)
             }
