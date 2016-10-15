@@ -8,8 +8,12 @@ import java.io.IOException
 
 class CommandsProcessor(
         socket: BluetoothSocket,
-        val callback: (String) -> (Unit)
+        val callback: Callback
 ) {
+
+    companion object {
+        private const val PAYMNET_REQUEST = "payment_request"
+    }
 
     private val input = DataInputStream(socket.inputStream)
     private val output = DataOutputStream(socket.outputStream)
@@ -17,6 +21,11 @@ class CommandsProcessor(
 
     fun sendString(s: String) {
         output.writeUTF(s)
+    }
+
+    fun sendPaymentRequest(pr: PaymentRequest) {
+        output.writeUTF(PAYMNET_REQUEST)
+        pr.save(output)
     }
 
 
@@ -38,13 +47,27 @@ class CommandsProcessor(
             while (working) {
                 try {
                     val s = input.readUTF()
-                    callback(s)
+                    when (s) {
+                        PAYMNET_REQUEST -> {
+                            val pr = PaymentRequest.load(input)
+                            callback.onPaymentRequest(pr)
+                        }
+                        else -> {
+                            //callback(s)
+                        }
+                    }
                 } catch (e: IOException) {
                     Log.w("Driver", e.message)
                 }
                 Thread.sleep(1000)
             }
         }
+
+    }
+
+    interface Callback {
+
+        fun onPaymentRequest(pr: PaymentRequest)
 
     }
 
