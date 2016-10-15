@@ -45,9 +45,7 @@ public class ApplyActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (connectedThread != null && paymentRequest != null) {
-                    connectedThread.send(new PaymentConfirm(paymentRequest.getDriverId(), paymentRequest.getDriverName(),
-                            paymentRequest.getVenchileCode(), paymentRequest.getRouteInfo(), paymentRequest.getPrice(),
-                            paymentRequest.getDriverSign(), info.getId(), "Типо публичный ключ"));
+                    connectedThread.send(new PaymentConfirm(paymentRequest, info.getId(), "Типо публичный ключ"));
                 }
             }
         });
