@@ -22,6 +22,7 @@ import java.util.UUID;
 import ru.composter.commands.CommandsProcessor;
 import ru.composter.commands.PaymentConfirm;
 import ru.composter.commands.PaymentRequest;
+import ru.composter.passanger.http.response.ProfileResponse;
 
 public class ApplyActivity extends AppCompatActivity {
 
@@ -39,13 +40,14 @@ public class ApplyActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_apply);
+        final ProfileResponse info = (ProfileResponse) getIntent().getSerializableExtra("info");
         findViewById(R.id.apply).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (connectedThread != null && paymentRequest != null) {
                     connectedThread.send(new PaymentConfirm(paymentRequest.getDriverId(), paymentRequest.getDriverName(),
                             paymentRequest.getVenchileCode(), paymentRequest.getRouteInfo(), paymentRequest.getPrice(),
-                            paymentRequest.getDriverSign(), "Мой айдишник", "Моя подпись"));
+                            paymentRequest.getDriverSign(), info.getId(), "Типо публичный ключ"));
                 }
             }
         });
