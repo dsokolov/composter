@@ -69,9 +69,7 @@ public class ApplyActivity extends AppCompatActivity {
         // Attempt to connect to the device
         if (bluetoothAdapter.isEnabled()) {
             connect(device);
-        }
-        else
-        {
+        } else {
             progressDialog.cancel();
             Toast.makeText(this, "Нужно включить блюпуп", Toast.LENGTH_LONG).show();
         }
@@ -111,6 +109,8 @@ public class ApplyActivity extends AppCompatActivity {
                 public void onPaymentConfirm(@NotNull PaymentConfirm pr) {
 
                 }
+
+
             });
 
         }
