@@ -10,16 +10,15 @@ class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
-        findViewById(R.id.root)!!.setOnClickListener {
-            if (KeysStorage.hasKeys(this)) {
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
-                finish()
-            } else {
-                val intent = Intent(this, RegistrationActivity::class.java)
-                startActivity(intent)
-                finish()
-            }
+        findViewById(R.id.auth)!!.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+        findViewById(R.id.register)!!.setOnClickListener {
+            val intent = Intent(this, RegistrationActivity::class.java)
+            startActivity(intent)
+            finish()
         }
     }
 
