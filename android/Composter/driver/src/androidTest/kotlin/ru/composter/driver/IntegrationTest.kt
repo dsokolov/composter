@@ -28,6 +28,7 @@ class IntegrationTest {
                 payer_sign = "ffffffff"
         ))
         val sumb = r.execute()
+        Assert.assertEquals(200, sumb.code())
         Assert.assertEquals("success", sumb.body().state)
     }
 
