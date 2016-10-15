@@ -1,6 +1,7 @@
 package ru.composter.driver
 
 import android.bluetooth.BluetoothAdapter
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
@@ -15,6 +16,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        findViewById(R.id.desc)!!.setOnClickListener {
+            val discoverableIntent = Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE)
+            discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 0)
+            startActivity(discoverableIntent)
+        }
         findViewById(R.id.start)!!.setOnClickListener {
             btListener.working = false
             btListener = SocketListener()
@@ -47,15 +53,25 @@ class MainActivity : AppCompatActivity() {
                     if (socket == null) {
                         Log.w("Driver", "Socket is null!")
                     } else {
+                        var b = true
                         Log.d("Driver", "${socket.remoteDevice.name}")
                         val commandProcerssor = CommandsProcessor(socket) {
                             Log.v("Sokolov", "get ${it}")
+                            b = false
                         }
-                        while (socket.isConnected) {
-                            commandProcerssor.sendString(data)
+                        commandProcerssor.start()
+                        ////while (socket.isConnected) {
+                        commandProcerssor.sendString(data)
+                        //  Thread.sleep(1000)
+                        Log.d("Driver", "sended")
+                        //}
+
+                        while (b) {
                             Thread.sleep(1000)
-                            Log.d("Driver", "sended")
                         }
+                        commandProcerssor.stop()
+                        serverSocket.close()
+                        break
                         Log.d("Driver", "done")
                     }
                 } catch (e: IOException) {
