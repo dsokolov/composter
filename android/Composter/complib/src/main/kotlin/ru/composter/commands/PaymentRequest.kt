@@ -8,6 +8,7 @@ data class PaymentRequest(
         val driverName: String,
         val venchileCode: String,
         val routeInfo: String,
+        val price: String,
         val driverSign: String
 ) {
 
@@ -17,6 +18,7 @@ data class PaymentRequest(
                 driverName = input.readUTF(),
                 venchileCode = input.readUTF(),
                 routeInfo = input.readUTF(),
+                price = input.readUTF(),
                 driverSign = input.readUTF()
         )
     }
@@ -27,6 +29,7 @@ data class PaymentRequest(
             writeUTF(driverName)
             writeUTF(venchileCode)
             writeUTF(routeInfo)
+            writeUTF(price)
             writeUTF(driverSign)
         }
     }
