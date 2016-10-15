@@ -27,20 +27,22 @@
         android:padding="16dp">
 
         <TextView
-            android:id="@+id/balance"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-            android:textColor="@color/primary_dark"
-            tools:text="100 руб" />
-
-        <TextView
             android:id="@+id/status"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-            android:textColor="@color/primary_dark"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="@color/accent"
             tools:text="Поиск..." />
+
+        <TextView
+            android:id="@+id/balance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:textColor="@color/accent"
+            android:textSize="48dp"
+            tools:text="100 руб" />
 
     </LinearLayout>
 

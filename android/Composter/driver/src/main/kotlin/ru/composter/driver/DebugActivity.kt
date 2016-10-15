@@ -8,6 +8,7 @@ import android.util.Log
 import ru.composter.commands.CommandsProcessor
 import ru.composter.commands.PaymentConfirm
 import ru.composter.commands.PaymentRequest
+import ru.composter.commands.PaymentSuccess
 import java.io.IOException
 import java.util.*
 
@@ -58,6 +59,10 @@ class DebugActivity : AppCompatActivity() {
                         var b = true
                         Log.d("Driver", "${socket.remoteDevice.name}")
                         val commandProcerssor = CommandsProcessor(socket, object : CommandsProcessor.Callback {
+                            override fun onPaymentSuccess(ps: PaymentSuccess) {
+                                throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
+                            }
+
                             override fun onPaymentConfirm(pr: PaymentConfirm) {
                                 throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
                             }

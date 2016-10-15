@@ -6,10 +6,13 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.TextView
 import ru.composter.commands.CommandsProcessor
 import ru.composter.commands.PaymentConfirm
 import ru.composter.commands.PaymentRequest
+import ru.composter.commands.PaymentSuccess
 import ru.composter.driver.api.Api
 import ru.composter.driver.api.TransactionSubmitRequest
 import java.util.*
@@ -45,6 +48,21 @@ class MainActivity : AppCompatActivity() {
         balanceListner.working = false
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        //menuInflater.inflate(R.menu.history, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menu_history -> {
+                startActivity(Intent(this, HistoryActivity::class.java))
+                return true
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
+    }
+
     fun stateWorking() {
         runOnUiThread {
             statusTextView.setText("Готов к работе")
@@ -64,13 +82,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun balance(s: String) {
-        balanceTextView.setText("Баланс: $s ₽")
+        runOnUiThread {
+            balanceTextView.setText("$s ₽")
+        }
     }
 
     inner class SocketListener : Runnable {
 
         var working = true
             @Synchronized get
+
+        private var commandProcerssor: CommandsProcessor? = null
 
         override fun run() {
             Log.v("Driver", "Start")
@@ -92,10 +114,14 @@ class MainActivity : AppCompatActivity() {
                         Log.d("Driver", socket.remoteDevice.name)
                         stateConnection(socket.remoteDevice.name)
 
-                        val commandProcerssor = CommandsProcessor(socket, object : CommandsProcessor.Callback {
+                        commandProcerssor = CommandsProcessor(socket, object : CommandsProcessor.Callback {
+                            override fun onPaymentSuccess(ps: PaymentSuccess) {
+                                throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
+                            }
+
                             override fun onPaymentConfirm(pr: PaymentConfirm) {
                                 statePaymentConfirm()
-                                Api.api.paymentConfirm(TransactionSubmitRequest(
+                                val r = Api.api.paymentConfirm(TransactionSubmitRequest(
                                         route_number = pr.paymentRequest.routeInfo,
                                         currency = pr.paymentRequest.currency,
                                         price = pr.paymentRequest.price,
@@ -107,6 +133,16 @@ class MainActivity : AppCompatActivity() {
                                         payment_id = pr.paymentRequest.payment_id,
                                         publican_id = pr.paymentRequest.driverId
                                 ))
+                                val b = r.execute()
+                                try {
+                                    Log.v("Driver", b.body().state)
+                                    sendPaymentSuccess(b.body().payer.balance)
+                                } catch (e: Exception) {
+                                    Log.e("Driver", e.message)
+                                } finally {
+                                    stateWorking()
+                                    stop()
+                                }
                             }
 
                             override fun onPaymentRequest(pr: PaymentRequest) {
@@ -114,8 +150,8 @@ class MainActivity : AppCompatActivity() {
                             }
 
                         })
-                        commandProcerssor.start()
-                        commandProcerssor.sendPaymentRequest(PaymentRequest(
+                        commandProcerssor?.start()
+                        commandProcerssor?.sendPaymentRequest(PaymentRequest(
                                 driverId = "58014aa4e9e84",
                                 driverName = "Иван Иванов",
                                 price = "25",
@@ -128,11 +164,11 @@ class MainActivity : AppCompatActivity() {
                         ))
 
 
-                        while (socket.isConnected && commandProcerssor.working) {
+                        while (socket.isConnected && (commandProcerssor?.working ?: false)) {
                             Thread.sleep(1000)
                         }
 
-                        commandProcerssor.stop()
+                        commandProcerssor?.stop()
                     }
 
 
@@ -141,6 +177,14 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
+        }
+
+        fun sendPaymentSuccess(bal: String) {
+            commandProcerssor?.sendPaymentSuccess(PaymentSuccess(bal))
+        }
+
+        fun stop() {
+            commandProcerssor?.stop()
         }
     }
 
