@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 import ru.composter.commands.CommandsProcessor;
+import ru.composter.commands.PaymentConfirm;
 import ru.composter.commands.PaymentRequest;
 
 public class ApplyActivity extends AppCompatActivity {
@@ -28,9 +29,9 @@ public class ApplyActivity extends AppCompatActivity {
 
     public ConnectThread connectThread;
     public ConnectedThread connectedThread;
-
-
     ProgressDialog progressDialog;
+    PaymentRequest paymentRequest;
+    PaymentConfirm paymentConfirm;
 
     private static final int REQUEST_CONNECT_DEVICE_INSECURE = 1;
 
@@ -41,8 +42,10 @@ public class ApplyActivity extends AppCompatActivity {
         findViewById(R.id.apply).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (connectedThread != null) {
-                    connectedThread.send("Какая-то инфа");
+                if (connectedThread != null && paymentRequest != null) {
+                    connectedThread.send(new PaymentConfirm(paymentRequest.getDriverId(), paymentRequest.getDriverName(),
+                            paymentRequest.getVenchileCode(), paymentRequest.getRouteInfo(), paymentRequest.getPrice(),
+                            paymentRequest.getDriverSign(), "Мой айдишник", "Моя подпись"));
                 }
             }
         });
@@ -57,7 +60,7 @@ public class ApplyActivity extends AppCompatActivity {
     private void connectDevice(Intent data) {
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Получение информации о водителе");
-        //progressDialog.setCancelable(false);
+        progressDialog.setCancelable(false);
         progressDialog.show();
         // Get the device MAC address
         String address = data.getExtras().getString(DeviceListActivity.EXTRA_DEVICE_ADDRESS);
@@ -85,7 +88,6 @@ public class ApplyActivity extends AppCompatActivity {
 
         private final BluetoothSocket mmSocket;
         CommandsProcessor commandsProcessor;
-        PaymentRequest paymentRequest;
 
         public ConnectedThread(BluetoothSocket socket, String socketType) {
             Log.d(TAG, "create ConnectedThread: " + socketType);
@@ -104,6 +106,11 @@ public class ApplyActivity extends AppCompatActivity {
                         }
                     });
                 }
+
+                @Override
+                public void onPaymentConfirm(@NotNull PaymentConfirm pr) {
+
+                }
             });
 
         }
@@ -115,9 +122,9 @@ public class ApplyActivity extends AppCompatActivity {
             commandsProcessor.start();
         }
 
-        public void send(String s) {
+        public void send(PaymentConfirm pc) {
             Log.i(TAG, "Message sent");
-            commandsProcessor.sendString(s);
+            commandsProcessor.sendPaymentConfirm(pc);
         }
 
         public void cancel() {
