@@ -32,4 +32,10 @@ object KeysStorage {
         return keys
     }
 
+    fun clear(context: Context) {
+        val dataDir = context.filesDir
+        val file = File(dataDir, FILE)
+        file.delete()
+    }
+
 }
