@@ -7,6 +7,7 @@ import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -56,7 +57,7 @@ public class ApplyActivity extends AppCompatActivity {
     private void connectDevice(Intent data) {
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Получение информации о водителе");
-        progressDialog.setCancelable(false);
+        //progressDialog.setCancelable(false);
         progressDialog.show();
         // Get the device MAC address
         String address = data.getExtras().getString(DeviceListActivity.EXTRA_DEVICE_ADDRESS);
@@ -170,16 +171,19 @@ public class ApplyActivity extends AppCompatActivity {
                     progressDialog.cancel();
                     Log.d(TAG, "unable to connect");
                     mmSocket.close();
-                    Toast.makeText(ApplyActivity.this, "Не удалось подключиться к водителю", Toast.LENGTH_SHORT).show();
-                    onBackPressed();
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(ApplyActivity.this, "Не удалось подключиться к водителю", Toast.LENGTH_SHORT).show();
+                            onBackPressed();
+                        }
+                    });
                 } catch (IOException e2) {
                     Log.d(TAG, "unable to close() " + mSocketType +
                             " socket during connection failure", e2);
                 }
                 //connectionFailed();
                 return;
-            } finally {
-                Log.d(TAG, "connected");
             }
 
         }
