@@ -16,29 +16,17 @@ object RsaUtils {
         return keyGen.generateKeyPair()
     }
 
-    fun encode(key: Key, data: String): ByteArray? {
-        var cipherText: ByteArray? = null
-        try {
-            val cipher = Cipher.getInstance(ALGORITHM)
-            cipher.init(Cipher.ENCRYPT_MODE, key)
-            cipherText = cipher.doFinal(data.toByteArray())
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        return cipherText
+    fun encode(key: Key, data: String): ByteArray {
+        val cipher = Cipher.getInstance(ALGORITHM)
+        cipher.init(Cipher.ENCRYPT_MODE, key)
+        return cipher.doFinal(data.toByteArray())
     }
 
     fun decode(key: Key, data: ByteArray): String {
-        var dectyptedText: ByteArray? = null
-        try {
-            val cipher = Cipher.getInstance(ALGORITHM)
-            cipher.init(Cipher.DECRYPT_MODE, key)
-            dectyptedText = cipher.doFinal(data)
-
-        } catch (ex: Exception) {
-            ex.printStackTrace()
-        }
-        return String(dectyptedText!!)
+        val cipher = Cipher.getInstance(ALGORITHM)
+        cipher.init(Cipher.DECRYPT_MODE, key)
+        val b = cipher.doFinal(data)
+        return String(b)
     }
 
 }

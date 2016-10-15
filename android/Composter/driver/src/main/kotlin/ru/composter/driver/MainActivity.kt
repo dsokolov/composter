@@ -16,13 +16,13 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        findViewById(R.id.start).setOnClickListener {
+        findViewById(R.id.start)!!.setOnClickListener {
             btListener.working = false
             btListener = SocketListener()
             btListener = SocketListener()
             Thread(btListener).start()
         }
-        findViewById(R.id.stop).setOnClickListener {
+        findViewById(R.id.stop)!!.setOnClickListener {
             btListener.working = false
         }
     }
