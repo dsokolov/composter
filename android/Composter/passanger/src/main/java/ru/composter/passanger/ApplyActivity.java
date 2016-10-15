@@ -1,12 +1,13 @@
 package ru.composter.passanger;
 
-import android.app.Activity;
+import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -20,12 +21,15 @@ import java.util.UUID;
 import ru.composter.commands.CommandsProcessor;
 import ru.composter.commands.PaymentRequest;
 
-public class ApplyActivity extends Activity {
+public class ApplyActivity extends AppCompatActivity {
 
     BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
     public ConnectThread connectThread;
     public ConnectedThread connectedThread;
+
+
+    ProgressDialog progressDialog;
 
     private static final int REQUEST_CONNECT_DEVICE_INSECURE = 1;
 
@@ -41,10 +45,19 @@ public class ApplyActivity extends Activity {
                 }
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         connectDevice(getIntent());
     }
 
     private void connectDevice(Intent data) {
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Получение информации о водителе");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
         // Get the device MAC address
         String address = data.getExtras().getString(DeviceListActivity.EXTRA_DEVICE_ADDRESS);
         // Get the BluetoothDevice object
@@ -55,6 +68,7 @@ public class ApplyActivity extends Activity {
         }
         else
         {
+            progressDialog.cancel();
             Toast.makeText(this, "Нужно включить блюпуп", Toast.LENGTH_LONG).show();
         }
     }
@@ -82,9 +96,10 @@ public class ApplyActivity extends Activity {
                         @Override
                         public void run() {
                             paymentRequest = pr;
-                            ((TextView) findViewById(R.id.name)).setText(pr.getDriverName());
-                            ((TextView) findViewById(R.id.car)).setText(pr.getVenchileCode());
-                            ((TextView) findViewById(R.id.route)).setText(pr.getRouteInfo());
+                            ((TextView) findViewById(R.id.name)).setText("Водитель: " + pr.getDriverName());
+                            ((TextView) findViewById(R.id.car)).setText("Номер автомобиля: " + pr.getVenchileCode().toUpperCase());
+                            ((TextView) findViewById(R.id.route)).setText("Маршрут: " + pr.getRouteInfo());
+                            progressDialog.cancel();
                         }
                     });
                 }
@@ -96,7 +111,6 @@ public class ApplyActivity extends Activity {
             Log.i(TAG, "BEGIN mConnectedThread");
             byte[] buffer = new byte[1024];
             int bytes;
-
             commandsProcessor.start();
         }
 
@@ -153,8 +167,11 @@ public class ApplyActivity extends Activity {
             } catch (IOException e) {
                 // Close the socket
                 try {
+                    progressDialog.cancel();
                     Log.d(TAG, "unable to connect");
                     mmSocket.close();
+                    Toast.makeText(ApplyActivity.this, "Не удалось подключиться к водителю", Toast.LENGTH_SHORT).show();
+                    onBackPressed();
                 } catch (IOException e2) {
                     Log.d(TAG, "unable to close() " + mSocketType +
                             " socket during connection failure", e2);

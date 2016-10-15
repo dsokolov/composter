@@ -16,7 +16,6 @@
 
 package ru.composter.passanger;
 
-import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
@@ -24,13 +23,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
+
+import ru.composter.passanger.adapters.BluetoothArrayAdapter;
 
 /**
  * This Activity appears as a dialog. It lists any paired devices and
@@ -38,7 +38,25 @@ import android.widget.TextView;
  * by the user, the MAC address of the device is sent back to the parent
  * Activity in the result Intent.
  */
-public class DeviceListActivity extends Activity {
+public class DeviceListActivity extends AppCompatActivity {
+
+    public class Bluetooth {
+        private String name;
+        private String address;
+
+        public Bluetooth(String name, String address) {
+            this.name = name;
+            this.address = address;
+        }
+
+        public String getAddress() {
+            return address;
+        }
+
+        public String getName() {
+            return name;
+        }
+    }
 
     /**
      * Tag for Log
@@ -58,17 +76,13 @@ public class DeviceListActivity extends Activity {
     /**
      * Newly discovered devices
      */
-    private ArrayAdapter<String> mNewDevicesArrayAdapter;
+    private ArrayAdapter<Bluetooth> mNewDevicesArrayAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_device_list);
-
-
-        mNewDevicesArrayAdapter = new ArrayAdapter<String>(this, R.layout.device_name);
+        mNewDevicesArrayAdapter = new BluetoothArrayAdapter(this);
 
         // Find and set up the ListView for newly discovered devices
         ListView newDevicesListView = (ListView) findViewById(R.id.new_devices);
@@ -138,8 +152,9 @@ public class DeviceListActivity extends Activity {
             mBtAdapter.cancelDiscovery();
 
             // Get the device MAC address, which is the last 17 chars in the View
-            String info = ((TextView) v).getText().toString();
-            String address = info.substring(info.length() - 17);
+            Bluetooth bluetooth = (Bluetooth) av.getItemAtPosition(arg2);
+            String info = bluetooth.getName();
+            String address = bluetooth.getAddress();
 
             // Create the result Intent and include the MAC address
             Intent intent = new Intent(DeviceListActivity.this, ApplyActivity.class);
@@ -166,15 +181,15 @@ public class DeviceListActivity extends Activity {
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 // If it's already paired, skip it, because it's been listed already
                 if (device.getBondState() != BluetoothDevice.BOND_BONDED) {
-                    mNewDevicesArrayAdapter.add(device.getName() + "\n" + device.getAddress());
+                    mNewDevicesArrayAdapter.add(new Bluetooth(device.getName(), device.getAddress()));
                 }
                 // When discovery is finished, change the Activity title
             } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
                 setProgressBarIndeterminateVisibility(false);
-                setTitle("Выбрать девайс");
+                setTitle("Найденные устройства");
                 if (mNewDevicesArrayAdapter.getCount() == 0) {
                     String noDevices = "Нет девайсов";
-                    mNewDevicesArrayAdapter.add(noDevices);
+                    mNewDevicesArrayAdapter.add(new Bluetooth(noDevices, null));
                 }
             }
         }
