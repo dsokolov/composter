@@ -4,8 +4,7 @@ import android.bluetooth.BluetoothAdapter
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import java.io.DataInputStream
-import java.io.DataOutputStream
+import ru.composter.commands.CommandsProcessor
 import java.io.IOException
 import java.util.*
 
@@ -49,12 +48,11 @@ class MainActivity : AppCompatActivity() {
                         Log.w("Driver", "Socket is null!")
                     } else {
                         Log.d("Driver", "${socket.remoteDevice.name}")
-                        val input = DataInputStream(socket.inputStream)
-                        val output = DataOutputStream(socket.outputStream)
-                        ///DataInputStream(input).read
-                        //DataOutputStream(vds).writeU
+                        val commandProcerssor = CommandsProcessor(socket) {
+                            Log.v("Sokolov", "get ${it}")
+                        }
                         while (socket.isConnected) {
-                            output.writeUTF(data)
+                            commandProcerssor.sendString(data)
                             Thread.sleep(1000)
                             Log.d("Driver", "sended")
                         }
