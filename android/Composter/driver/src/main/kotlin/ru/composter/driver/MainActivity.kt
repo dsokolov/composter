@@ -10,7 +10,9 @@ import android.widget.TextView
 import ru.composter.commands.CommandsProcessor
 import ru.composter.commands.PaymentConfirm
 import ru.composter.commands.PaymentRequest
+import ru.composter.driver.api.Api
 import java.util.*
+import java.util.concurrent.Executors
 import kotlin.properties.Delegates
 
 class MainActivity : AppCompatActivity() {
@@ -18,6 +20,7 @@ class MainActivity : AppCompatActivity() {
     var balanceTextView: TextView by Delegates.notNull()
     var statusTextView: TextView by Delegates.notNull()
     val socketListener = SocketListener()
+    val balanceListner = BalanceListener()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,7 +28,10 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(findViewById(R.id.toolbar) as Toolbar)
         balanceTextView = findViewById(R.id.balance) as TextView
         statusTextView = findViewById(R.id.status) as TextView
-        Thread(socketListener).start()
+
+        val executore = Executors.newFixedThreadPool(5)
+        executore.execute(socketListener)
+        executore.execute(balanceListner)
 
         balance("999.99")
 
@@ -37,6 +43,7 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         socketListener.working = false
+        balanceListner.working = false
     }
 
     fun stateWorking() {
@@ -108,7 +115,7 @@ class MainActivity : AppCompatActivity() {
                         ))
 
 
-                        while (socket.isConnected) {
+                        while (socket.isConnected && commandProcerssor.working) {
                             Thread.sleep(1000)
                         }
 
@@ -122,6 +129,27 @@ class MainActivity : AppCompatActivity() {
             }
 
         }
+    }
+
+    inner class BalanceListener : Runnable {
+
+        var working = true
+
+        override fun run() {
+            while (working) {
+                Log.d("Balance", "working")
+                try {
+                    val b = Api.api.balance("58014aa4e9e84").execute()
+                    val bal = b.body().balance
+                    Log.d("Balance", bal)
+                    balance(bal)
+                } catch (e: Exception) {
+                    Log.w("Balance", e.message)
+                }
+                Thread.sleep(3000)
+            }
+        }
+
     }
 
 }
