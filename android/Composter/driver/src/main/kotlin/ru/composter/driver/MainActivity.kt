@@ -1,12 +1,14 @@
 package ru.composter.driver
 
 import android.bluetooth.BluetoothAdapter
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.util.Log
 import android.widget.TextView
 import ru.composter.commands.CommandsProcessor
+import ru.composter.commands.PaymentConfirm
 import ru.composter.commands.PaymentRequest
 import java.util.*
 import kotlin.properties.Delegates
@@ -26,6 +28,10 @@ class MainActivity : AppCompatActivity() {
         Thread(socketListener).start()
 
         balance("999.99")
+
+        val discoverableIntent = Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE)
+        discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 0)
+        startActivity(discoverableIntent)
     }
 
     override fun onDestroy() {
@@ -42,6 +48,12 @@ class MainActivity : AppCompatActivity() {
     fun stateConnection(name: String) {
         runOnUiThread {
             statusTextView.setText("Соединение с $name")
+        }
+    }
+
+    fun statePaymentConfirm() {
+        runOnUiThread {
+            statusTextView.setText("Подтверждение оплаты")
         }
     }
 
@@ -71,10 +83,14 @@ class MainActivity : AppCompatActivity() {
                         Log.w("Driver", "Socket is null!")
                     } else {
 
-                        Log.d("Driver", "${socket.remoteDevice.name}")
-                        stateConnection("${socket.remoteDevice.name}")
+                        Log.d("Driver", socket.remoteDevice.name)
+                        stateConnection(socket.remoteDevice.name)
 
                         val commandProcerssor = CommandsProcessor(socket, object : CommandsProcessor.Callback {
+                            override fun onPaymentConfirm(pr: PaymentConfirm) {
+                                statePaymentConfirm()
+                            }
+
                             override fun onPaymentRequest(pr: PaymentRequest) {
                                 //throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
                             }
