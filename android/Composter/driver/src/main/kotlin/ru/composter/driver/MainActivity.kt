@@ -156,7 +156,7 @@ class MainActivity : AppCompatActivity() {
                                 driverName = "Иван Иванов",
                                 price = "25",
                                 routeInfo = "Самара - Тольятти",
-                                venchileCode = "а999аа63rus",
+                                venchileCode = "а234аа163rus",
                                 driverSign = "подпись",
                                 timestamp = "1234567",
                                 currency = "RUR",
