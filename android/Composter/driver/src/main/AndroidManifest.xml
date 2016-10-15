@@ -36,6 +36,11 @@
             android:label="Регистрация"
             android:theme="@style/AppTheme.NoActionBar" />
 
+        <activity
+            android:name=".AuthActivity"
+            android:label="Авторизация"
+            android:theme="@style/AppTheme.NoActionBar" />
+
     </application>
 
 </manifest>

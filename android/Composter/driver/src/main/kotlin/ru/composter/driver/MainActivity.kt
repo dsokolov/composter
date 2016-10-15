@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
 
     fun stateWorking() {
         runOnUiThread {
-            statusTextView.setText("Поиск...")
+            statusTextView.setText("Готов к работе")
         }
     }
 

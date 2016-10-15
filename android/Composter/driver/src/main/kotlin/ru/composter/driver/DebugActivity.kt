@@ -57,7 +57,7 @@ class DebugActivity : AppCompatActivity() {
                     } else {
                         var b = true
                         Log.d("Driver", "${socket.remoteDevice.name}")
-                        val commandProcerssor = CommandsProcessor(socket, object : CommandsProcessor.Callback{
+                        val commandProcerssor = CommandsProcessor(socket, object : CommandsProcessor.Callback {
                             override fun onPaymentConfirm(pr: PaymentConfirm) {
                                 throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
                             }
@@ -75,7 +75,10 @@ class DebugActivity : AppCompatActivity() {
                                 price = "25",
                                 routeInfo = "Кюда надо слющай?",
                                 venchileCode = "а999аа63rus",
-                                driverSign = "подпись"
+                                driverSign = "подпись",
+                                payment_id = "",
+                                currency = "",
+                                timestamp = ""
 
                         ))
                         //  Thread.sleep(1000)
