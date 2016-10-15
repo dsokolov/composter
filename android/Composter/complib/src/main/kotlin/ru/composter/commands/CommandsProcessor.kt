@@ -1,8 +1,10 @@
 package ru.composter.commands
 
 import android.bluetooth.BluetoothSocket
+import android.util.Log
 import java.io.DataInputStream
 import java.io.DataOutputStream
+import java.io.IOException
 
 class CommandsProcessor(
         socket: BluetoothSocket,
@@ -16,6 +18,7 @@ class CommandsProcessor(
     fun sendString(s: String) {
         output.writeUTF(s)
     }
+
 
     fun start() {
         wather.working = false
@@ -33,8 +36,12 @@ class CommandsProcessor(
 
         override fun run() {
             while (working) {
-                val s = input.readUTF()
-                callback(s)
+                try {
+                    val s = input.readUTF()
+                    callback(s)
+                } catch (e: IOException) {
+                    Log.w("Driver", e.message)
+                }
                 Thread.sleep(1000)
             }
         }
