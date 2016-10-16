@@ -24,7 +24,6 @@ import ru.composter.commands.PaymentConfirm;
 import ru.composter.commands.PaymentRequest;
 import ru.composter.commands.PaymentSuccess;
 import ru.composter.passanger.R;
-import ru.composter.passanger.http.response.ProfileResponse;
 import ru.composter.passanger.model.User;
 
 public class ApplyActivity extends AppCompatActivity {
@@ -43,12 +42,12 @@ public class ApplyActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_apply);
-        final ProfileResponse info = (ProfileResponse) getIntent().getSerializableExtra("info");
+        final User user = User.getUserInfo(this);
         findViewById(R.id.apply).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (connectedThread != null && paymentRequest != null) {
-                    connectedThread.send(new PaymentConfirm(paymentRequest, info.getId(), "Типо публичный ключ"));
+                    connectedThread.send(new PaymentConfirm(paymentRequest, user.getId(), "Типо публичный ключ"));
                 }
             }
         });

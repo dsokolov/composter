@@ -20,7 +20,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         User user = User.getUserInfo(this);
-        ((TextView) findViewById(R.id.balance)).setText(user.getBalance() + " Р на счёте");
+        ((TextView) findViewById(R.id.balance)).setText(user.getBalance() + " \u20BD на счёте");
         ((TextView) findViewById(R.id.last_balance_sync)).setText("Обновлено: " + DateFormatUtils.format(user.getTimestamp(), "dd.MM.yyyy hh:mm"));
         findViewById(R.id.search).setOnClickListener(new View.OnClickListener() {
             @Override

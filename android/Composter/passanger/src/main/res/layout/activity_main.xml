@@ -47,26 +47,36 @@
         android:id="@+id/logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@mipmap/ic_launcher"
+        android:background="@drawable/logo"
         android:layout_centerInParent="true"/>
+
+    <TextView
+        android:id="@+id/info_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="40dp"
+        android:paddingRight="40dp"
+        android:gravity="center_horizontal"
+        android:textSize="18dp"
+        android:layout_centerHorizontal="true"
+        android:text="Оплачивайте проезд в транспорте с такой наклейкой"
+        android:layout_above="@+id/logo"/>
 
     <Button
         android:id="@+id/search"
         android:layout_width="200dp"
         android:layout_height="60dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="150dp"
         android:text="оплатить"
         android:layout_below="@+id/logo"/>
 
-    <Button
-        android:id="@+id/history"
-        android:layout_width="200dp"
-        android:layout_height="60dp"
-        android:layout_centerHorizontal="true"
-        android:text="история"
-        android:layout_below="@+id/search"/>
-
-
+    <!--<Button-->
+        <!--android:id="@+id/history"-->
+        <!--android:layout_width="200dp"-->
+        <!--android:layout_height="60dp"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:text="история"-->
+        <!--android:layout_below="@+id/search"/>-->
 
 </RelativeLayout>
