@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="Button" parent="text">
+        <item name="android:fontFamily" tools:ignore="NewApi">sans-serif</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/textSizeMini</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:paddingLeft">@dimen/defaultPadding</item>
+        <item name="android:paddingRight">@dimen/defaultPadding</item>
+        <item name="android:elevation" tools:targetApi="lollipop">0dp</item>
+    </style>
+
+    <!--красная кновка со скругленными углами-->
+    <style name="Button.Accent">
+        <item name="android:background">@drawable/button_red</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <!--серая кновка со скругленными углами-->
+    <style name="Button.Gray">
+        <item name="android:background">@drawable/button_gray</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <!--темно-синяя кновка со скругленными углами-->
+    <style name="Button.DarkBlue">
+        <item name="android:background">@drawable/button_dark_blue</item>
+        <item name="android:textColor">@color/text_white_dark_blue</item>
+    </style>
+
+    <style name="Button.DarkGraySmall">
+        <item name="android:background">@drawable/button_dark_gray</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:layout_height">30dp</item>
+        <item name="android:textSize">@dimen/textSizeExtraMiniMini</item>
+        <item name="android:layout_width">wrap_content</item>
+    </style>
+</resources>

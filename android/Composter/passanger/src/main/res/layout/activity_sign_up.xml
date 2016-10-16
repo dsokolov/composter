@@ -11,21 +11,22 @@
         android:id="@+id/login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="user"
-        android:hint="Login"/>
+        android:text="Иванов Иван"
+        android:hint="Логин"/>
 
     <EditText
         android:id="@+id/password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="password"
-        android:hint="Password"
+        android:hint="Пароль"
         android:layout_below="@+id/login"/>
 
     <Button
         android:id="@+id/register"
+        style="@style/Button.Accent"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:text="Register" />
 

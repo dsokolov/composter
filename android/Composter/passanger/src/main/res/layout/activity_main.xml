@@ -9,27 +9,23 @@
     android:paddingTop="@dimen/activity_vertical_margin">
 
     <TextView
+        style="@style/text.medium"
         android:id="@+id/header"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="24dp"
+        android:textAllCaps="true"
+        android:textSize="22sp"
         android:text = "Компостер"
         android:layout_centerHorizontal="true"/>
 
     <TextView
+        style="@style/text.large"
         android:id="@+id/balance"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="24dp"
         android:text = "198 Р на счёте"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/header"/>
 
     <TextView
+        style="@style/text.mini"
         android:id="@+id/last_balance_sync"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="16dp"
         android:text = "Обновлено: 26.10.2016 11:20"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/balance"/>
@@ -52,8 +48,10 @@
 
     <Button
         android:id="@+id/search"
-        android:layout_width="200dp"
-        android:layout_height="60dp"
+        style="@style/Button.Accent"
+        android:layout_width="wrap_content"
+        android:minWidth="200dp"
+        android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
         android:text="оплатить"
@@ -61,11 +59,14 @@
 
     <Button
         android:id="@+id/history"
-        android:layout_width="200dp"
-        android:layout_height="60dp"
+        style="@style/Button.Accent"
+        android:layout_width="wrap_content"
+        android:minWidth="200dp"
+        android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:text="история"
-        android:layout_below="@+id/search"/>
+        android:layout_below="@+id/search"
+        android:layout_marginTop="16dp"/>
 
 
 

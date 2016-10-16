@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!--Базовый стиль для отображения любого текста-->
+    <style name="text" parent="android:Widget.TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/textSizeLarge</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">sans-serif-light</item>
+    </style>
+
+    <style name="text.mini">
+        <item name="android:textSize">@dimen/textSizeMini</item>
+    </style>
+
+    <style name="text.mini.extra">
+        <item name="android:textSize">@dimen/textSizeExtraMini</item>
+    </style>
+
+    <style name="text.mini.extra.mini">
+        <item name="android:textSize">@dimen/textSizeExtraMiniMini</item>
+    </style>
+
+    <style name="text.large">
+        <item name="android:textSize">@dimen/textSizeLarge</item>
+    </style>
+
+    <style name="text.large.extra">
+        <item name="android:textSize">@dimen/textSizeExtraLarge</item>
+    </style>
+
+    <style name="text.medium">
+        <item name="android:fontFamily" tools:ignore="NewApi">sans-serif-medium</item>
+    </style>
+
+    <style name="text.White">
+        <item name="android:textColor">@color/white</item>
+    </style>
+</resources>

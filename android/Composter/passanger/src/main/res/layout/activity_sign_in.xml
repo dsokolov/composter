@@ -11,22 +11,28 @@
         android:id="@+id/login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="user"
-        android:hint="Login"/>
+        android:text=" Петров"
+        android:hint="Логин"
+        />
 
     <EditText
         android:id="@+id/password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="password"
-        android:hint="Password"
-        android:layout_below="@+id/login"/>
+        android:text="тест"
+        android:hint="Пароль"
+        android:layout_below="@+id/login"
+        android:textSize="22sp"
+        android:fontFamily="sans-serif-light"/>
 
     <Button
         android:id="@+id/auth"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:text="Auth" />
+        style="@style/Button.Accent"
+        android:text="Войти"
+        android:textSize="22sp"
+        android:fontFamily="sans-serif-medium"/>
 
 </RelativeLayout>

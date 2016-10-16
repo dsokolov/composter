@@ -62,7 +62,7 @@
 
             <Button
                 android:id="@+id/auth"
-                style="@style/Widget.AppCompat.Button.Colored"
+                style="@style/res"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-medium"
