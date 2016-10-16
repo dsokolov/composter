@@ -5,13 +5,17 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+
+import ru.composter.passanger.R;
 
 /**
  * @author Sergey Elizarov (elizarov1988@gmail.com)
@@ -31,6 +35,11 @@ public class Payment {
         }
         return result;
     }
+
+    public static ArrayAdapter getAdapter(Context context, List<Payment> content) {
+        return new Adapter(context, content);
+    }
+
     private String id;
     private String routeNumber;
     private String price;
@@ -76,8 +85,8 @@ public class Payment {
         return payer;
     }
 
-    public class Adapter extends ArrayAdapter<Payment> {
-
+    public static class Adapter extends ArrayAdapter<Payment> {
+        private SimpleDateFormat SDF = new SimpleDateFormat("dd MMM hh:mm")
         public Adapter(Context context, List<Payment> objects) {
             super(context, -1, objects);
         }
@@ -85,7 +94,14 @@ public class Payment {
         @NonNull
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            return super.getView(position, convertView, parent);
+            if (convertView == null) {
+                convertView = View.inflate(getContext(), R.layout.listitem_payment, null);
+            }
+            Payment payment = getItem(position);
+            ((TextView)convertView.findViewById(R.id.routeNumber)).setText(payment.getRouteNumber());
+            ((TextView)convertView.findViewById(R.id.timestamp)).setText(SDF.format(payment.getTimestamp()));
+            ((TextView)convertView.findViewById(R.id.routeNumber)).setText(payment.getPrice());
+            return convertView;
         }
     }
 }
