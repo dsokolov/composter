@@ -86,7 +86,8 @@ public class Payment {
     }
 
     public static class Adapter extends ArrayAdapter<Payment> {
-        private SimpleDateFormat SDF = new SimpleDateFormat("dd MMM hh:mm")
+        private SimpleDateFormat SDF = new SimpleDateFormat("dd MMM hh:mm");
+
         public Adapter(Context context, List<Payment> objects) {
             super(context, -1, objects);
         }
