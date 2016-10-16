@@ -15,6 +15,7 @@ import ru.composter.passanger.api.Api;
 import ru.composter.passanger.api.ApiSingleton;
 import ru.composter.passanger.http.request.RegistrationRequest;
 import ru.composter.passanger.http.response.ProfileResponse;
+import ru.composter.passanger.model.User;
 
 public class SignUpActivity extends AppCompatActivity {
     @Override
@@ -22,18 +23,29 @@ public class SignUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
         final Api api = ApiSingleton.instance().getApi();
+        if (User.getUserInfo(this).getId() != null) {
+            Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
+            startActivity(intent);
+        } else {
+            setOnRegisterClick(api);
+        }
+    }
+
+    private void setOnRegisterClick(final Api api) {
         findViewById(R.id.register).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String name = ((EditText) findViewById(R.id.login)).getText().toString();
                 String password = ((EditText) findViewById(R.id.password)).getText().toString();
-                RegistrationRequest registrationRequest = new RegistrationRequest(name, password, "Типо публичный ключ", 0);
+                final RegistrationRequest registrationRequest = new RegistrationRequest(name, password, "Типо публичный ключ", 0);
                 Call<ProfileResponse> responseCall = api.registration(registrationRequest);
                 responseCall.enqueue(new Callback<ProfileResponse>() {
                     @Override
                     public void onResponse(Call<ProfileResponse> call, Response<ProfileResponse> response) {
+                        ProfileResponse profileResponse = response.body();
+                        User user = new User(profileResponse.getId(), profileResponse.getName(), profileResponse.getBalance());
+                        user.save(SignUpActivity.this);
                         Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
-                        intent.putExtra("info", response.body());
                         startActivity(intent);
                     }
 

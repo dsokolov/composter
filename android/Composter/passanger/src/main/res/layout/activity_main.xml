@@ -8,11 +8,65 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin">
 
+    <TextView
+        android:id="@+id/header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24dp"
+        android:text = "Компостер"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:id="@+id/balance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24dp"
+        android:text = "198 Р на счёте"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/header"/>
+
+    <TextView
+        android:id="@+id/last_balance_sync"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16dp"
+        android:text = "Обновлено: 26.10.2016 11:20"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/balance"/>
+
+    <View
+        android:id="@+id/line"
+        android:layout_width="30dp"
+        android:layout_height="5dp"
+        android:background="@color/colorAccent"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/last_balance_sync"/>
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@mipmap/ic_launcher"
+        android:layout_centerInParent="true"/>
+
     <Button
         android:id="@+id/search"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_centerInParent="true"
-        android:text="search" />
+        android:layout_width="200dp"
+        android:layout_height="60dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:text="оплатить"
+        android:layout_below="@+id/logo"/>
+
+    <Button
+        android:id="@+id/history"
+        android:layout_width="200dp"
+        android:layout_height="60dp"
+        android:layout_centerHorizontal="true"
+        android:text="история"
+        android:layout_below="@+id/search"/>
+
+
 
 </RelativeLayout>
