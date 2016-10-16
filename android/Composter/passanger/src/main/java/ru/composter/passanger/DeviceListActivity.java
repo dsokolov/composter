@@ -31,7 +31,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import ru.composter.passanger.adapters.BluetoothArrayAdapter;
-import ru.composter.passanger.http.response.ProfileResponse;
 
 /**
  * This Activity appears as a dialog. It lists any paired devices and
@@ -80,13 +79,10 @@ public class DeviceListActivity extends AppCompatActivity {
      */
     private ArrayAdapter<Bluetooth> mNewDevicesArrayAdapter;
 
-    private ProfileResponse info;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_list);
-        info = (ProfileResponse) getIntent().getSerializableExtra(INFO);
         mNewDevicesArrayAdapter = new BluetoothArrayAdapter(this);
 
         // Find and set up the ListView for newly discovered devices
@@ -163,10 +159,7 @@ public class DeviceListActivity extends AppCompatActivity {
             // Create the result Intent and include the MAC address
             Intent intent = new Intent(DeviceListActivity.this, ApplyActivity.class);
             intent.putExtra(EXTRA_DEVICE_ADDRESS, address);
-            intent.putExtra(INFO, info);
-            // Set result and finish this Activity
             startActivity(intent);
-            finish();
         }
     };
 
