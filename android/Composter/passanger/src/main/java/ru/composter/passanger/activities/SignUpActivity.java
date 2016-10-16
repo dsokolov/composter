@@ -1,4 +1,4 @@
-package ru.composter.passanger;
+package ru.composter.passanger.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +11,7 @@ import android.widget.Toast;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import ru.composter.passanger.R;
 import ru.composter.passanger.api.Api;
 import ru.composter.passanger.api.ApiSingleton;
 import ru.composter.passanger.http.request.RegistrationRequest;
@@ -43,7 +44,7 @@ public class SignUpActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<ProfileResponse> call, Response<ProfileResponse> response) {
                         ProfileResponse profileResponse = response.body();
-                        User user = new User(profileResponse.getId(), profileResponse.getName(), profileResponse.getBalance());
+                        User user = new User(profileResponse.getId(), profileResponse.getName(), profileResponse.getBalance(), System.currentTimeMillis());
                         user.save(SignUpActivity.this);
                         Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
                         startActivity(intent);

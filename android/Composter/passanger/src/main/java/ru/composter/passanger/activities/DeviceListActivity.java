@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package ru.composter.passanger;
+package ru.composter.passanger.activities;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -30,6 +30,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import ru.composter.passanger.R;
 import ru.composter.passanger.adapters.BluetoothArrayAdapter;
 
 /**
@@ -130,9 +131,6 @@ public class DeviceListActivity extends AppCompatActivity {
         // Indicate scanning in the title
         setProgressBarIndeterminateVisibility(true);
         setTitle("Поиск");
-
-        // Turn on sub-title for new devices
-        findViewById(R.id.title_new_devices).setVisibility(View.VISIBLE);
 
         // If we're already discovering, stop it
         if (mBtAdapter.isDiscovering()) {

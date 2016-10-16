@@ -1,4 +1,4 @@
-package ru.composter.passanger;
+package ru.composter.passanger.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,10 +11,12 @@ import android.widget.Toast;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import ru.composter.passanger.R;
 import ru.composter.passanger.api.Api;
 import ru.composter.passanger.api.ApiSingleton;
 import ru.composter.passanger.http.request.AuthRequest;
 import ru.composter.passanger.http.response.ProfileResponse;
+import ru.composter.passanger.model.User;
 
 public class SignInActivity extends AppCompatActivity {
 
@@ -22,8 +24,18 @@ public class SignInActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
-
+        setTitle("Регистрация");
         final Api api = ApiSingleton.instance().getApi();
+        if (User.getUserInfo(this).getId() != null) {
+            Intent intent = new Intent(SignInActivity.this, MainActivity.class);
+            startActivity(intent);
+        } else {
+            setOnRegisterClick(api);
+        }
+    }
+
+    private void setOnRegisterClick(final Api api) {
+
         findViewById(R.id.auth).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -34,8 +46,10 @@ public class SignInActivity extends AppCompatActivity {
                 responseCall.enqueue(new Callback<ProfileResponse>() {
                     @Override
                     public void onResponse(Call<ProfileResponse> call, Response<ProfileResponse> response) {
+                        ProfileResponse profileResponse = response.body();
+                        User user = new User(profileResponse.getId(), profileResponse.getName(), profileResponse.getBalance(), System.currentTimeMillis());
+                        user.save(SignInActivity.this);
                         Intent intent = new Intent(SignInActivity.this, MainActivity.class);
-                        intent.putExtra("info", response.body());
                         startActivity(intent);
                     }
 

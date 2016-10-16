@@ -1,4 +1,4 @@
-package ru.composter.passanger;
+package ru.composter.passanger.activities;
 
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
@@ -23,7 +23,9 @@ import ru.composter.commands.CommandsProcessor;
 import ru.composter.commands.PaymentConfirm;
 import ru.composter.commands.PaymentRequest;
 import ru.composter.commands.PaymentSuccess;
+import ru.composter.passanger.R;
 import ru.composter.passanger.http.response.ProfileResponse;
+import ru.composter.passanger.model.User;
 
 public class ApplyActivity extends AppCompatActivity {
 
@@ -94,7 +96,9 @@ public class ApplyActivity extends AppCompatActivity {
             commandsProcessor = new CommandsProcessor(mmSocket, new CommandsProcessor.Callback() {
                 @Override
                 public void onPaymentSuccess(@NotNull PaymentSuccess ps) {
-                    ps.getBalance();
+                    User user = User.getUserInfo(ApplyActivity.this);
+                    user.setBalance(ps.getBalance());
+                    user.save(ApplyActivity.this);
                     hide();
                 }
 

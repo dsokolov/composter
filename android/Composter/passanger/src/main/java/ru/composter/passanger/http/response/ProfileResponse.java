@@ -6,7 +6,7 @@ public class ProfileResponse implements Serializable {
 
     String id;
     String name;
-    int balance;
+    String balance;
     int role;
 
     public int getRole() {
@@ -17,7 +17,7 @@ public class ProfileResponse implements Serializable {
         return name;
     }
 
-    public int getBalance() {
+    public String getBalance() {
         return balance;
     }
 

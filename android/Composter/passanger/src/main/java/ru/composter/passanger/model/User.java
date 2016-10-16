@@ -15,7 +15,7 @@ public class User {
 
     private String id;
     private String name;
-    private int balance;
+    private String balance;
     private long timestamp;
 
     public User(ProfileResponse info) {
@@ -26,14 +26,14 @@ public class User {
         }
     }
 
-    public User(String id, String name, int balance, long timestamp) {
+    public User(String id, String name, String balance, long timestamp) {
         this.id = id;
         this.name = name;
         this.balance = balance;
         this.timestamp = timestamp;
     }
 
-    public void setBalance(int balance) {
+    public void setBalance(String balance) {
         this.balance = balance;
     }
 
@@ -53,7 +53,7 @@ public class User {
         return id;
     }
 
-    public int getBalance() {
+    public String getBalance() {
         return balance;
     }
 
@@ -64,12 +64,12 @@ public class User {
     public void save(Context context) {
         SharedPreferences preferences = context.getSharedPreferences(USER, Context.MODE_PRIVATE);
         preferences.edit().putString(ID, id).putString(NAME, name).
-                putInt(BALANCE, balance).putLong(TIMESTAMP, System.currentTimeMillis()).apply();
+                putString(BALANCE, balance).putLong(TIMESTAMP, System.currentTimeMillis()).apply();
     }
 
     public static User getUserInfo(Context context) {
         SharedPreferences preferences = context.getSharedPreferences(USER, Context.MODE_PRIVATE);
         return new User(preferences.getString(ID, null), preferences.getString(NAME, null),
-                preferences.getInt(BALANCE, 0), preferences.getLong(TIMESTAMP, System.currentTimeMillis()));
+                preferences.getString(BALANCE, "0"), preferences.getLong(TIMESTAMP, System.currentTimeMillis()));
     }
 }

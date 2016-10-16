@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import ru.composter.passanger.DeviceListActivity;
+import ru.composter.passanger.activities.DeviceListActivity;
 import ru.composter.passanger.R;
 
 public class BluetoothArrayAdapter extends ArrayAdapter<DeviceListActivity.Bluetooth> {

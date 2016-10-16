@@ -9,17 +9,17 @@
 
     <application android:allowBackup="true" android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name" android:supportsRtl="true" android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"/>
-        <activity android:name=".DeviceListActivity"/>
-        <activity android:name=".ApplyActivity"/>
-        <activity android:name=".SignInActivity">
+        <activity android:name=".activities.MainActivity"/>
+        <activity android:name=".activities.DeviceListActivity"/>
+        <activity android:name=".activities.ApplyActivity"/>
+        <activity android:name=".activities.SignInActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SignUpActivity"/>
+        <activity android:name=".activities.SignUpActivity"/>
     </application>
 
 </manifest>

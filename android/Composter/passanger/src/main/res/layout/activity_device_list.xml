@@ -5,19 +5,11 @@
               android:orientation="vertical"
     >
 
-    <TextView
-        android:id="@+id/title_new_devices"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="5dp"
-        android:text="Найденные устройства"
-        android:visibility="gone"
-        />
-
     <ListView
         android:id="@+id/new_devices"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:minHeight="50dp"
         android:layout_weight="2"
         />
 
