@@ -14,6 +14,7 @@ class CommandsProcessor(
     companion object {
         private const val PAYMNET_REQUEST = "payment_request"
         private const val PAYMNET_CONFIRM = "payment_confirm"
+        private const val PAYMNET_SUCCESS = "payment_success"
     }
 
     private val input = DataInputStream(socket.inputStream)
@@ -35,6 +36,11 @@ class CommandsProcessor(
     fun sendPaymentConfirm(pc: PaymentConfirm) {
         output.writeUTF(PAYMNET_CONFIRM)
         pc.save(output)
+    }
+
+    fun sendPaymentSuccess(ps: PaymentSuccess) {
+        output.writeUTF(PAYMNET_SUCCESS)
+        ps.save(output)
     }
 
     fun start() {
@@ -64,6 +70,10 @@ class CommandsProcessor(
                             val pc = PaymentConfirm.load(input)
                             callback.onPaymentConfirm(pc)
                         }
+                        PAYMNET_SUCCESS -> {
+                            val ps = PaymentSuccess.load(input)
+                            callback.onPaymentSuccess(ps)
+                        }
                         else -> {
                             //callback(s)
                         }
@@ -79,11 +89,9 @@ class CommandsProcessor(
     }
 
     interface Callback {
-
         fun onPaymentRequest(pr: PaymentRequest)
-
         fun onPaymentConfirm(pr: PaymentConfirm)
-
+        fun onPaymentSuccess(ps: PaymentSuccess)
     }
 
 }

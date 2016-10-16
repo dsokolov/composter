@@ -41,6 +41,11 @@
             android:label="Авторизация"
             android:theme="@style/AppTheme.NoActionBar" />
 
+        <activity
+            android:name=".HistoryActivity"
+            android:label="История транзакций"
+            android:theme="@style/AppTheme.NoActionBar" />
+
     </application>
 
 </manifest>
