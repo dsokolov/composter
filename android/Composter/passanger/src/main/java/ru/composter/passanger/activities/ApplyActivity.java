@@ -1,14 +1,16 @@
 package ru.composter.passanger.activities;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -27,7 +29,7 @@ import ru.composter.commands.PaymentSuccess;
 import ru.composter.passanger.R;
 import ru.composter.passanger.model.User;
 
-public class ApplyActivity extends AppCompatActivity {
+public class ApplyActivity extends Activity {
 
     BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
@@ -102,11 +104,29 @@ public class ApplyActivity extends AppCompatActivity {
             mmSocket = socket;
             commandsProcessor = new CommandsProcessor(mmSocket, new CommandsProcessor.Callback() {
                 @Override
-                public void onPaymentSuccess(@NotNull PaymentSuccess ps) {
+                public void onPaymentSuccess(@NotNull final PaymentSuccess ps) {
                     User user = User.getUserInfo(ApplyActivity.this);
                     user.setBalance(ps.getBalance());
                     user.save(ApplyActivity.this);
                     hide();
+                    new Handler(getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            AlertDialog.Builder alertDialog = new AlertDialog.Builder(ApplyActivity.this);
+                            alertDialog.setTitle("Успешно");
+                            alertDialog.setMessage("Оплата прошла успешно! Ваш баланс: " + ps.getBalance() + " \u20BD");
+                            alertDialog.setCancelable(false);
+                            alertDialog.setPositiveButton("Ок", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent intent = new Intent(ApplyActivity.this, MainActivity.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(intent);
+                                }
+                            });
+                            alertDialog.show();
+                        }
+                    });
                 }
 
                 @Override
