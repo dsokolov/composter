@@ -66,21 +66,8 @@
         android:minWidth="200dp"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="150dp"
         android:text="оплатить"
-        android:layout_below="@+id/logo"/>
-
-    <Button
-        android:id="@+id/history"
-        style="@style/Button.Accent"
-        android:layout_width="wrap_content"
-        android:minWidth="200dp"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:text="история"
-        android:layout_below="@+id/search"
-        android:layout_marginTop="16dp"/>
-
+        android:layout_alignParentBottom="true"/>
 
     <!--<Button-->
         <!--android:id="@+id/history"-->

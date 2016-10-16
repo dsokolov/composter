@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#4CAF50</color>
-    <color name="colorPrimaryDark">#388E3C</color>
+    <color name="colorPrimary">#ca9400</color>
+    <color name="colorPrimaryDark">#b4870c</color>
     <color name="colorAccent">#ffbb00</color>
     <color name="dark_blue">#3b4c5a</color>
     <color name="tarawera">#213C47</color>
