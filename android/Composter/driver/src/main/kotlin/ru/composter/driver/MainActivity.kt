@@ -201,7 +201,7 @@ class MainActivity : AppCompatActivity() {
                     Log.d("Balance", bal)
                     balance(bal)
                 } catch (e: Exception) {
-                    Log.w("Balance", e.message)
+                    Log.w("Balance", "$e.message")
                 }
                 Thread.sleep(3000)
             }

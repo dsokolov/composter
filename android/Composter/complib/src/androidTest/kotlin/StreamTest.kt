@@ -37,7 +37,7 @@ class StreamTest {
         val f = File(dataDir, "tmp")
         f.delete()
         val output = DataOutputStream(FileOutputStream(f))
-        val pr1 = PaymentRequest("A", "B", "C", "D", "200", "sign")
+        val pr1 = PaymentRequest("A", "B", "C", "D", "200", "sign", "1232", "RUR", "cddfd")
         pr1.save(output)
         output.close()
 
