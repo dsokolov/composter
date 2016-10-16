@@ -153,10 +153,10 @@ class MainActivity : AppCompatActivity() {
                         commandProcerssor?.start()
                         commandProcerssor?.sendPaymentRequest(PaymentRequest(
                                 driverId = "58014aa4e9e84",
-                                driverName = "Иван Иванов",
-                                price = "25",
+                                driverName = "Иванов Иван Иванович",
+                                price = "125",
                                 routeInfo = "Самара - Тольятти",
-                                venchileCode = "а234аа163rus",
+                                venchileCode = "а 234 аа 163 rus",
                                 driverSign = "подпись",
                                 timestamp = "1234567",
                                 currency = "RUR",

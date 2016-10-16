@@ -11,6 +11,7 @@ import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,7 +25,6 @@ import ru.composter.commands.PaymentConfirm;
 import ru.composter.commands.PaymentRequest;
 import ru.composter.commands.PaymentSuccess;
 import ru.composter.passanger.R;
-import ru.composter.passanger.http.response.ProfileResponse;
 import ru.composter.passanger.model.User;
 
 public class ApplyActivity extends AppCompatActivity {
@@ -43,13 +43,20 @@ public class ApplyActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_apply);
-        final ProfileResponse info = (ProfileResponse) getIntent().getSerializableExtra("info");
+        final User user = User.getUserInfo(this);
+        findViewById(R.id.root).setVisibility(View.INVISIBLE);
         findViewById(R.id.apply).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (connectedThread != null && paymentRequest != null) {
-                    connectedThread.send(new PaymentConfirm(paymentRequest, info.getId(), "Типо публичный ключ"));
+                    connectedThread.send(new PaymentConfirm(paymentRequest, user.getId(), "Типо публичный ключ"));
                 }
+            }
+        });
+        findViewById(R.id.cancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
             }
         });
     }
@@ -108,9 +115,13 @@ public class ApplyActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             paymentRequest = pr;
-                            ((TextView) findViewById(R.id.name)).setText("Водитель: " + pr.getDriverName());
-                            ((TextView) findViewById(R.id.car)).setText("Номер автомобиля: " + pr.getVenchileCode().toUpperCase());
-                            ((TextView) findViewById(R.id.route)).setText("Маршрут: " + pr.getRouteInfo());
+                            findViewById(R.id.root).setVisibility(View.VISIBLE);
+                            ((TextView) findViewById(R.id.name)).setText(pr.getDriverName());
+                            ((TextView) findViewById(R.id.car)).setText(pr.getVenchileCode().toUpperCase());
+                            String[] route = pr.getRouteInfo().split(" - ");
+                            ((TextView) findViewById(R.id.route_from)).setText(route[0]);
+                            ((TextView) findViewById(R.id.route_to)).setText(route[1]);
+                            ((Button) findViewById(R.id.apply)).setText("Оплатить " + pr.getPrice() + " \u20BD");
                             progressDialog.cancel();
                         }
                     });
