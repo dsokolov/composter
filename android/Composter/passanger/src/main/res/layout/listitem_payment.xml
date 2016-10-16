@@ -17,6 +17,8 @@
             android:layout_height="wrap_content"
             android:textSize="22sp"
             android:ellipsize="end"
+            android:fontFamily="sans-serif-light"
+            android:textColor="@android:color/black"
             tools:text="ул. Гагарина 6 -  Ленина 32"
             />
         <TextView
@@ -25,7 +27,8 @@
             android:layout_height="wrap_content"
             android:textSize="18sp"
             android:layout_gravity="center_vertical"
-            tools:text="+16 октября 2016"
+            android:fontFamily="sans-serif"
+            tools:text="16 октября"
             />
 
     </LinearLayout>
@@ -33,11 +36,13 @@
         android:id="@+id/price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="30sp"
+        android:textSize="40sp"
         android:layout_gravity="center_vertical"
         android:ellipsize="end"
-        android:textStyle="bold"
         android:layout_alignParentRight="true"
+        android:textColor="@android:color/holo_red_light"
+        android:fontFamily="sans-serif-light"
+        android:padding="8dp"
         tools:text="+25Р"
         />
 
