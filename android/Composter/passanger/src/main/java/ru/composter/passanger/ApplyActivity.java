@@ -22,6 +22,7 @@ import java.util.UUID;
 import ru.composter.commands.CommandsProcessor;
 import ru.composter.commands.PaymentConfirm;
 import ru.composter.commands.PaymentRequest;
+import ru.composter.commands.PaymentSuccess;
 import ru.composter.passanger.http.response.ProfileResponse;
 
 public class ApplyActivity extends AppCompatActivity {
@@ -69,9 +70,7 @@ public class ApplyActivity extends AppCompatActivity {
         // Attempt to connect to the device
         if (bluetoothAdapter.isEnabled()) {
             connect(device);
-        }
-        else
-        {
+        } else {
             progressDialog.cancel();
             Toast.makeText(this, "Нужно включить блюпуп", Toast.LENGTH_LONG).show();
         }
@@ -83,16 +82,22 @@ public class ApplyActivity extends AppCompatActivity {
     }
 
     public class ConnectedThread extends Thread {
-
         static final String TAG = "Passanger";
 
         private final BluetoothSocket mmSocket;
-        CommandsProcessor commandsProcessor;
+        private CommandsProcessor commandsProcessor;
+        private ProgressDialog pd;
 
         public ConnectedThread(BluetoothSocket socket, String socketType) {
             Log.d(TAG, "create ConnectedThread: " + socketType);
             mmSocket = socket;
             commandsProcessor = new CommandsProcessor(mmSocket, new CommandsProcessor.Callback() {
+                @Override
+                public void onPaymentSuccess(@NotNull PaymentSuccess ps) {
+                    ps.getBalance();
+                    hide();
+                }
+
                 @Override
                 public void onPaymentRequest(@NotNull final PaymentRequest pr) {
                     new Handler(getMainLooper()).post(new Runnable() {
@@ -109,10 +114,8 @@ public class ApplyActivity extends AppCompatActivity {
 
                 @Override
                 public void onPaymentConfirm(@NotNull PaymentConfirm pr) {
-
                 }
             });
-
         }
 
         public void run() {
@@ -122,8 +125,9 @@ public class ApplyActivity extends AppCompatActivity {
             commandsProcessor.start();
         }
 
-        public void send(PaymentConfirm pc) {
+        void send(PaymentConfirm pc) {
             Log.i(TAG, "Message sent");
+            show("Выполняется оплата..\nЭто может занять несколько секунд");
             commandsProcessor.sendPaymentConfirm(pc);
         }
 
@@ -135,6 +139,25 @@ public class ApplyActivity extends AppCompatActivity {
                 Log.e(TAG, "close() of connect socket failed", e);
             }
         }
+
+        private void show(final String msg) {
+            new Handler(getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    pd = new ProgressDialog(ApplyActivity.this);
+                    pd.setMessage(msg);
+                    pd.show();
+                }
+            });
+        }
+
+        private void hide() {
+            if (pd != null) {
+                pd.dismiss();
+            }
+        }
+
+
     }
 
     public class ConnectThread extends Thread {
