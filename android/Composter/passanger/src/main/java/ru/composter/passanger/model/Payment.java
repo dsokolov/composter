@@ -100,7 +100,7 @@ public class Payment {
             Payment payment = getItem(position);
             ((TextView)convertView.findViewById(R.id.routeNumber)).setText(payment.getRouteNumber());
             ((TextView)convertView.findViewById(R.id.timestamp)).setText(SDF.format(payment.getTimestamp()));
-            ((TextView)convertView.findViewById(R.id.routeNumber)).setText(payment.getPrice());
+            ((TextView)convertView.findViewById(R.id.routeNumber)).setText("+" + payment.getPrice() + "Р");
             return convertView;
         }
     }
